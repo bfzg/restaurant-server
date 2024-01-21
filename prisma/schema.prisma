@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum USERSTATUS {
+  GENERAL_USER
+  ADMIN_USER
+  SUPER_ADMIN_USER
+}
+
+enum GENDER {
+  MAN
+  WOMAN
+  ET
+}
+
+enum PAYMETHOD {
+  WEICHAT
+  ALIPAY
+  CASH
+}
+
+enum ORDERSTATUS {
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  PAYMENT_PENDING
+  PAYMENT_WAITINGF
+  SUCCESS
+  CABCEL
+  DELIVERING
+  RECEIVED
+}
+
+model User {
+  id        String     @id @default(dbgenerated())
+  openid    String?    @default(dbgenerated())
+  name      String
+  password  String
+  phone     String
+  sex       GENDER
+  avatar    String?
+  city      String?
+  status    USERSTATUS
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Address {
+  id             String @id @default(dbgenerated())
+  user_id        String @default(dbgenerated())
+  phone          String
+  address        String
+  address_detail String
+  sex            GENDER
+  city           String
+  title          String
+}
+
+model Dish {
+  id          String   @id @default(dbgenerated())
+  name        String
+  status      Boolean
+  price       Float
+  old_price   Float?
+  spec        String
+  category_id String?
+  image       String?
+  description String?
+  tag         String?
+  month_saled Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Categroy {
+  id        String   @id @default(dbgenerated())
+  name      String
+  sort      Int
+  status    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id                      String         @id @default(dbgenerated())
+  order_detail            Order_Detail[]
+  play_method             PAYMETHOD
+  quantity                Int
+  address_id              String
+  total_price             Float
+  user_id                 String
+  shipping_fee            Float
+  status                  ORDERSTATUS
+  tableware_status        Int
+  estimated_delivery_time String?
+  remark                  String?
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+}
+
+model Order_Detail {
+  id      Int     @id @default(autoincrement())
+  Order   Order?  @relation(fields: [orderId], references: [id])
+  orderId String?
+  dish_id String
+  price   Float
+}
