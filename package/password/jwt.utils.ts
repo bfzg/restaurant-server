@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken";
 import { decode } from "jsonwebtoken";
 
+const jwt_secret = String(process.env.JWT_SECRET)
+
 /**
  * 生成token
  * @param userInfo 需要返回的用户信息
  * */
-export const sign = async (userInfo) => {
+export const sign = async (userInfo:any) => {
   return new Promise((resolve, reject) => {
-    jwt.sign(userInfo, process.env.JWT_SECRET, (err, token) => {
+    jwt.sign(userInfo, jwt_secret, (err:any, token:any) => {
       if (err) return reject(err);
       resolve(token);
     });
@@ -18,9 +20,9 @@ export const sign = async (userInfo) => {
  * 解析token
  * @param token 前端返回的token
  * */
-export const verifySign = async (token) => {
+export const verifySign = async (token:any) => {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    jwt.verify(token, jwt_secret, (err:any, decoded:any) => {
       if (err) return reject(err);
       resolve(decoded);
     });

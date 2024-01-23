@@ -2,37 +2,28 @@ import moment from 'moment'
 //生成 解析 token 解析密码
 import {sign} from '../../package/password/jwt.utils';
 import {matchPassword, hashPassword} from '../../package/password/bcrypt_utils'
-import DAO from '../../prisma/prisma'
 import {Response,Request} from 'express'
+import { GetUserinfo } from '../../services/admin/user_service';
 
 //登录
 export const login = async (req:Request, res:Response) => {
     let username = req.body.username;
     let password = req.body.password;
 
-    let dbRes = await DAO.user.findFirst({
-        where: {
-            name: username,
-        },
-    })
+    const dbRes = await GetUserinfo(username)
 
     if (!dbRes) return res.status(400).json('该用户不存在')
     if (!await matchPassword(dbRes.password, password)) return res.status(400).json('密码错误!')
-    console.log(dbRes);
-    
-    // let userInfo = {
-    //     id: dataValues.id,
-    //     name: dataValues.name,
-    //     phone: dataValues.phone,
-    //     sex: dataValues.sex,
-    //     id_number: dataValues.id_number,
-    //     create_time: dataValues.create_time,
-    //     update_time: dataValues.update_time,
-    //     create_user: dataValues.create_user,
-    //     update_user: dataValues.update_user
-    // }
-    // let token = await sign(userInfo)
-    // res.json(Result.success(token))
+    let userInfo = {
+        id: dbRes.id,
+        name: dbRes.name,
+        phone: dbRes.phone,
+        sex: dbRes.sex,
+        create_user: dbRes.createdAt,
+        update_time: dbRes.updatedAt,
+    }
+    let token = await sign(userInfo)
+    res.status(200).json(token)
 }
 
 
