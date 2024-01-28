@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
-import { login } from "../controllers/admin/user_controller";
+import { createUser, login } from "../controllers/admin/user_controller";
 import { getDishList, createDish } from "../controllers/admin/dish_controller";
 import { validateAddDish } from "../validators/dish_validator";
-import {validateLogin} from "../validators/user_validators"
+import { validateAddUser, validateLogin } from "../validators/user_validators";
 // const {getCategoryList,reviseCategoryInfo,reviseCategoryStatus,createCategory} = require('../controllers/admin/Category.controller')
 // const {getDishFlavorsList} = require('../controllers/admin/Flavors.controller')
 // const {dishUploadCallback} = require('../controllers/admin/DishUpload')
@@ -14,8 +14,8 @@ import uploadFile from "../middleware/upload_middleware";
 /**
  * 用户api
  * */
-router.post("/login",validateLogin, login);
-// router.post('/employee/save', expressJoi(req_createUser_schema), createEmployee)
+router.post("/login", validateLogin, login);
+router.post("/user/save", validateAddUser, createUser);
 // router.get('/employee/list', getEmployeeList)
 // router.post('/employee/status',reviseEmployeeStatus)
 // router.put('/employee/employeeInfo',reviseEmployeeInfo)

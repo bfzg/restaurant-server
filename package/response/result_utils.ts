@@ -5,6 +5,6 @@ import { Response } from "express";
  * @param message 描述信息
  * @param data 数据
  * */
-export default function Result<T>(res: Response, code, message: string, data:T) {
-  return res.status(400).json({ error: true, message,data });
+export default function Result<T>(res: Response, code:number, data:T | any) {
+  return res.status(code).json({data});
 }

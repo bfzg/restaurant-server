@@ -5,4 +5,5 @@ declare module 'user'{
         ADMIN,
         USER
     }
+
 }

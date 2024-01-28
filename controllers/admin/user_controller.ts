@@ -3,7 +3,9 @@ import moment from 'moment'
 import {sign} from '../../package/password/jwt.utils';
 import {matchPassword, hashPassword} from '../../package/password/bcrypt_utils'
 import {Response,Request} from 'express'
-import { GetUserinfo } from '../../services/admin/user_service';
+import { AddUser, GetUserinfo } from '../../services/admin/user_service';
+import { IAddUser } from "../../validators/user_validators";
+import Result from "../../package/response/result_utils"
 
 //登录
 export const login = async (req:Request, res:Response) => {
@@ -27,24 +29,18 @@ export const login = async (req:Request, res:Response) => {
 }
 
 
-// //创建员工
-// exports.createEmployee = async (req, res) => {
-//     let reqInfo = req.body;
-//     let dbRes = await DAO.findOne(Employee, {
-//         where: {
-//             username: reqInfo.username
-//         }
-//     });
-//     let userInfo = Object.assign({}, reqInfo);
-//     userInfo.status = 1;
-//     userInfo.password = await hashPassword('123456'); //默认密码 可以在编辑中修改!
-//     if (dbRes) return res.json(Result.validateFailed('该用户名已存在!'))
-//     let dbCreate = await DAO.create(Employee, userInfo);
-
-//     if (dbCreate.uniqno != 1) return res.json(Result.failed('创建用户失败!'));
-
-//     res.json(Result.success(reqInfo))
-// }
+//创建员工
+export const createUser = async (req:Request<any,any,IAddUser>, res:Response) => {
+    const reqInfo = req.body;
+    const findRes = await GetUserinfo(reqInfo.name)
+    if (findRes) return Result<string>(res,400,'该用户名已存在!')
+    let userInfo = Object.assign({}, reqInfo);
+    userInfo.password = await hashPassword(reqInfo.password); //默认密码 可以在编辑中修改!
+    const addRes = AddUser(userInfo).then(response=>{
+        if (!response) return Result<string>(res,400,'创建用户失败!')
+        return Result(res,200,response)
+    })
+}
 
 // //获取员工列表
 // exports.getEmployeeList = async (req, res) => {

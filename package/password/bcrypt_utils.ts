@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 const SALT = 10;
 
 //生成加密后的密码
-export const hashPassword = (password: string) => {
+export const hashPassword = (password: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     bcrypt.hash(password, SALT, (err, encrypted) => {
       if (err) {
