@@ -113,3 +113,26 @@ model Order_Detail {
   dish_id String
   price   Float
 }
+
+model Dict_Types {
+  id         Int      @id @default(autoincrement())
+  code       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  is_default Boolean
+  name       String
+}
+
+model Dict_Datas {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  label      String
+  value      String
+  sort       BigInt
+  remark     String?
+  enabled    Boolean
+  is_default Boolean
+  code       String
+  flag       String
+}

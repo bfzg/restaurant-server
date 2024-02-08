@@ -6,5 +6,5 @@ import { Response } from "express";
  * @param data 数据
  * */
 export default function Result<T>(res: Response, code:number, data:T | any) {
-  return res.status(code).json({data});
+  return res.status(code).json(data);
 }

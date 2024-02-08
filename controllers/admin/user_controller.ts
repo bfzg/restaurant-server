@@ -14,8 +14,8 @@ export const login = async (req:Request, res:Response) => {
 
     const dbRes = await GetUserinfo(username)
 
-    if (!dbRes) return res.status(400).json('该用户不存在')
-    if (!await matchPassword(dbRes.password, password)) return res.status(400).json('密码错误!')
+    if (!dbRes) return Result(res,400,{msg:'该用户不存在'})
+    if (!await matchPassword(dbRes.password, password)) return Result(res,400,{msg:'密码错误!'})
     let userInfo = {
         id: dbRes.id,
         name: dbRes.name,
@@ -25,7 +25,7 @@ export const login = async (req:Request, res:Response) => {
         update_time: dbRes.updatedAt,
     }
     let token = await sign(userInfo)
-    res.status(200).json(token)
+    Result(res,200,{userInfo:userInfo,token:token})
 }
 
 

@@ -4,6 +4,7 @@ import { createUser, login } from "../controllers/admin/user_controller";
 import { getDishList, createDish } from "../controllers/admin/dish_controller";
 import { validateAddDish } from "../validators/dish_validator";
 import { validateAddUser, validateLogin } from "../validators/user_validators";
+import {createDictType} from "../controllers/admin/dict_controller"
 // const {getCategoryList,reviseCategoryInfo,reviseCategoryStatus,createCategory} = require('../controllers/admin/Category.controller')
 // const {getDishFlavorsList} = require('../controllers/admin/Flavors.controller')
 // const {dishUploadCallback} = require('../controllers/admin/DishUpload')
@@ -35,6 +36,12 @@ router.post(
 // router.post('/dish/status',reviseDishStatus)
 // router.delete('/dish/delete',deleteDish)
 // router.get('/dish/fine',findDish)
+
+/**
+ * 字典api
+ */
+router.post("/dictType/add",createDictType)
+
 
 /**
  * 菜品口味api
