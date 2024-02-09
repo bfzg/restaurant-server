@@ -4,3 +4,8 @@ export type GlobalInterfaceReq<T> = {
     data: T;
 }
 
+export type QueryPagination = {
+    page?:number;
+    size?:number;
+    query?:string;
+}

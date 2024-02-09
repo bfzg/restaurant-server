@@ -4,7 +4,7 @@ import { createUser, login } from "../controllers/admin/user_controller";
 import { getDishList, createDish } from "../controllers/admin/dish_controller";
 import { validateAddDish } from "../validators/dish_validator";
 import { validateAddUser, validateLogin } from "../validators/user_validators";
-import {createDictType} from "../controllers/admin/dict_controller"
+import {createDictType, findDictType} from "../controllers/admin/dict_controller"
 import {validateAddDictType} from "../validators/dict_validator"
 // const {getCategoryList,reviseCategoryInfo,reviseCategoryStatus,createCategory} = require('../controllers/admin/Category.controller')
 // const {getDishFlavorsList} = require('../controllers/admin/Flavors.controller')
@@ -41,6 +41,7 @@ router.post(
 /**
  * 字典api
  */
+router.get("/dictType/list",findDictType)
 router.post("/dictType/add",validateAddDictType,createDictType)
 
 

@@ -1,9 +1,19 @@
-import DAO from "../../prisma/prisma"
 import {IAddDict} from "../../validators/dict_validator"
+import type {QueryPagination} from "../../typings/global"
+import DAO from "../../prisma/prisma"
+
+export async function FindDictType(page:number,size:number) {
+    const skip = (page - 1) * size!;
+    const take = size!;
+    const findRes = await DAO.dict_Types.findMany({
+        skip,
+        take,
+    })
+    const total = await DAO.dict_Types.count({})
+    return {data:findRes,total:total}
+}
 
 export async function AddDictType(data:IAddDict){
-    console.log(`============ ${data} ===========`);
-    
     const findRes = await DAO.dict_Types.findFirst({
         where:{
            OR:[
