@@ -7,7 +7,7 @@ const addDictType = z.object({
     name:z.string().min(1).max(128)
 })
 
-export type IAddDict = z.infer<typeof addDictType>
+export type IAddDictType = z.infer<typeof addDictType>
 
 export function validateAddDictType(req:Request,res:Response,next:NextFunction){
     try{
@@ -17,5 +17,28 @@ export function validateAddDictType(req:Request,res:Response,next:NextFunction){
     } catch (error){
         const zodError = error as ZodError;
         Result(res,400,{msg:`添加字典类型数据校验失败${JSON.stringify(zodError)}`})
+    }
+}
+
+const addDict = z.object({
+    label:z.string().min(1),
+    value:z.string().min(1),
+    sort:z.number(),    
+    remark:z.string(),
+    enabled:z.boolean(),
+    code:z.string().min(1),
+    flag:z.string()
+})
+
+export type IAddDict = z.infer<typeof addDict>
+
+export async function validateAddDict (req:Request,res:Response,next:NextFunction) {
+    try{
+        const dictData = req.body;
+        addDict.parse(dictData)
+        next()
+    } catch (error){
+        const zodError = error as ZodError;
+        Result(res,400,{msg:`添加字典数据校验失败${JSON.stringify(zodError)}`})
     }
 }
